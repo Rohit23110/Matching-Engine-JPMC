@@ -1,8 +1,8 @@
 import pandas as pd
-
+from Output import *
 if __name__ == "__main__":
-    sellorders = pd.read_csv("Sellordersnew.csv")
-    buyorders = pd.read_csv("Buyordersnew.csv")
+    sellorders = pd.read_csv("Sellorders.csv")
+    buyorders = pd.read_csv("Buyorders.csv")
     transactions = pd.DataFrame(columns = ['buy_customer_id', 'sell_customer_id', 'quantity', 'stock_code', 'price', 'buy_order_id', 'sell_order_id'])
 
     for i in range(buyorders.shape[0]):
@@ -10,13 +10,10 @@ if __name__ == "__main__":
         if len(sellorder) != 0:
             sellorder = sellorder.iloc[0]
             print(sellorder, "\n")
-            # print(sellorder.order_id, "\n")
             transaction = {'buy_customer_id': buyorders.iloc[i].customer_id, 'sell_customer_id': sellorder.customer_id, 'quantity': sellorder.quantity, 'stock_code' : sellorder.stock_code, 'price': 1, 'buy_order_id': buyorders.iloc[i].order_id, 'sell_order_id': sellorder.order_id}
             transactions = transactions.append(transaction, ignore_index=True)
             sellorders.loc[sellorders.order_id == sellorder.order_id, 'status'] = "Completed"
             buyorders.at[i, 'status'] = "Completed"
-    # print(buyorders)
-    # print(sellorders)
-    print(transactions)
-    buyorders.to_csv("Buyordersnew.csv", sep=",", index=False)
-    sellorders.to_csv("Sellordersnew.csv", sep=",", index=False)
+    printOutput(sellorders,buyorders,transactions)
+    buyorders.to_csv("Buyorders.csv", sep=",", index=False)
+    sellorders.to_csv("Sellorders.csv", sep=",", index=False)
