@@ -1,5 +1,5 @@
 import pandas as pd
-
+from Output import *
 if __name__ == "__main__":
     sellorders = pd.read_csv("Sellorders.csv")
     buyorders = pd.read_csv("Buyorders.csv")
@@ -17,6 +17,7 @@ if __name__ == "__main__":
             buyorders.at[i, 'status'] = "Completed"
     # print(buyorders)
     # print(sellorders)
-    print(transactions)
+    # print(transactions)
+    printOutput(sellorders,buyorders,transactions)
     buyorders.to_csv("Buyorders.csv", sep=",", index=False)
     sellorders.to_csv("Sellorders.csv", sep=",", index=False)

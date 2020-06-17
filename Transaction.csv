@@ -1,0 +1,4 @@
+buy_customer_id,sell_customer_id,quantity,stock_code,price,buy_order_id,sell_order_id
+C2,C1,15,RIL,1,B2,S1
+C5,C3,20,AAPL,1,B3,S3
+C3,C2,15,RIL,1,B6,S6
