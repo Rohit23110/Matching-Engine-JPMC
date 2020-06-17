@@ -1,7 +1,3 @@
 order_id,quantity,stock_code,customer_id,order_type,flavor,status
-S1,15,RIL,C1,Market,AllOrNone,Completed
-S2,20,AXISBANK,C2,Market,AllOrNone,Pending
-S3,20,AAPL,C3,Market,AllOrNone,Completed
-S4,18,BANKINDIA,C4,Market,AllOrNone,Pending
-S5,15,GOOG,C5,Market,AllOrNone,Pending
-S6,15,RIL,C2,Market,AllOrNone,Completed
+1,16,500325,2,sell,all/none,completed
+2,20,533022,5,sell,all/none,completed
