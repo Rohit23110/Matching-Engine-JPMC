@@ -21,5 +21,6 @@ def printOutput(sellOrder,buyOrder,trans):
         print("______________________________Transaction Occured!____________________________")
         trans.to_csv("Transaction.csv",mode='a', sep=",", index=False,header=None)
         transaction = pd.read_csv("Transaction.csv")
+        column_fields = transaction.columns
         print(transaction)
     

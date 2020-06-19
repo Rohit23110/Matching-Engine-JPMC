@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<!--Outputs transaction data in tabular form using bootstrap-->
+<html lang="en">
+<head>
+  <title>Transaction Output</title>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+
+<div class="container">          
+  <table class="table table-striped">
+    <thead>
+      <tr>
+          {% for headings in column_fields %}
+            <th>{{headings}}</th>
+        {% endfor %}
+      </tr>
+      buy_customer_id,sell_customer_id,quantity,stock_code,price,buy_order_id,sell_order_id
+    </thead>
+    <tbody>
+        {% for data in transaction %}
+      <tr>
+        <td>{{data['buy_customer_id']}}</td>
+        <td>{{data['sell_customer_id']}}</td>
+        <td>{{data['quantity']}}</td>
+        <td>{{data['stock_code']}}</td>
+        <td>{{data['price']}}</td>
+        <td>{{data['buy_order_id']}}</td>
+        <td>{{data['sell_order_id']}}</td>
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+</div>
+</body>
+</html>
