@@ -1,0 +1,8 @@
+order_id,quantity,stock_code,customer_id,order_type,limit_price,flavor,status
+1,12,500325,1,market,NaN,all/none,pending
+2,16,500325,3,market,NaN,all/none,completed
+3,20,533022,4,market,NaN,all/none,completed
+4,10,533022,10,market,NaN,all/none,pending
+5,10,508939,12,limit,9.74,all/none,completed
+6,10,509899,90,limit,108.0,all/none,completed
+1,5,597899,88,limit,89.0,all/none,pending
