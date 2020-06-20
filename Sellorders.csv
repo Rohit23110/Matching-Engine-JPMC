@@ -1,3 +1,2 @@
 order_id,quantity,stock_code,customer_id,order_type,flavor,status
-1,16,500325,2,sell,all/none,completed
-2,20,533022,5,sell,all/none,completed
+3,5,500325,157,sell,partial,pending

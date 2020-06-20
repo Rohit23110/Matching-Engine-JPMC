@@ -1,4 +1,2 @@
 order_id,quantity,stock_code,customer_id,order_type,flavor,status
-1,12,500325,1,buy,all/none,pending
-1,16,500325,3,buy,all/none,completed
-1,20,533022,4,buy,all/none,completed
+1,5,500325,156,buy,all/none,completed
