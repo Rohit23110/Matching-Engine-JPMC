@@ -2,12 +2,12 @@ import pandas as pd
 def printOutput(sellOrder,buyOrder,trans):
     if(sellOrder.empty==False):
         print("_______________________Status Of All SellOrders_____________________________")
-        print(sellOrder)
+        print(sellOrder, "\n")
     else:
         print("There are no new SellOrders!")
     if(buyOrder.empty==False):
         print("_______________________Status Of All BuyOrders_______________________________")
-        print(buyOrder)
+        print(buyOrder, "\n")
     else:
         print("There are no new BuyOrders!")
 
