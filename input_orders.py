@@ -44,7 +44,13 @@ if __name__ == "__main__":
                 except Exception as e:
                     print("Please Enter Valid Limit Price :")
                     limit_price = str(input())
+            print("Partial or All/None :")
+            flavour = str(input())
+            while(not (flavour.lower() == 'partial' or flavour.lower() == 'all/none')):
+                print("Please Enter Valid Flavour :")
+                flavour = str(input())
         else:
+            flavour = 'NaN'
             limit_price = 'NaN'
         print("Please Enter Quantity :")
         quantity = int(input())
@@ -53,11 +59,6 @@ if __name__ == "__main__":
             quantity = int(input())  
         print("Please Enter Stock Code :")
         stock_code = str(input())
-        print("Partial or All/None :")
-        flavour = str(input())
-        while(not (flavour.lower() == 'partial' or flavour.lower() == 'all/none')):
-            print("Please Enter Valid Flavour :")
-            flavour = str(input())
         print("Press 1 to add Order")
         a = int(input())
         new_order = order('pending',quantity,stock_code,customer_id,order_id,order_type,limit_price,flavour)
