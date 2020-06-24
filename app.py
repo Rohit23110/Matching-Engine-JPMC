@@ -4,7 +4,6 @@ import pandas as pd
 import csv
 from csv import DictWriter
 from forms import inputOrderForm
-from fetch_prices import getCurrentPrice
 from Matching import matching
 
 app = Flask(__name__)
