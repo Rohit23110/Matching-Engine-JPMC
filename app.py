@@ -5,6 +5,7 @@ import csv
 from csv import DictWriter
 from forms import inputOrderForm
 from fetch_prices import getCurrentPrice
+from Matching import matching
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret'
@@ -18,30 +19,30 @@ def append_dict_as_row(file_name, dict_of_elem, field_names):
 @app.route('/transactions')
 def show_transaction():
     transaction_data = []
-    input_file = csv.DictReader(open("transaction.csv"))
+    input_file = csv.DictReader(open("Transaction.csv"))
     for row in input_file:
         transaction_data.append(row)
-        print(type(row['price']))
-        print(row)
     return render_template('transaction.html',transaction_data = transaction_data)
 
+#@app.route('/place_orders',methods=['GET','POST'])
 @app.route('/',methods=['GET','POST'])
 def get_orders():
     form = inputOrderForm()
     buy_data = []
     sell_data = []
-    max_order_id = 0
-    input_file = csv.DictReader(open("buy_orders.csv"))
+    max_buyorder_id = 0
+    max_sellorder_id = 0
+    input_file = csv.DictReader(open("Buyorders.csv"))
     for row in input_file:
-        if(max_order_id < int(row['order_id'])):
-            max_order_id = int(row['order_id'])
+        if(max_buyorder_id < int(row['order_id'])):
+          max_buyorder_id = int(row['order_id'])
         # row['price'] = getCurrentPrice(row['stock_code'])
         # print(row)
         buy_data.append(row)
-    input_file = csv.DictReader(open("sell_orders.csv"))
+    input_file = csv.DictReader(open("Sellorders.csv"))
     for row in input_file:
-        if(max_order_id < int(row['order_id'])):
-            max_order_id = int(row['order_id'])
+        if(max_sellorder_id < int(row['order_id'])):
+          max_sellorder_id = int(row['order_id'])
         # row['price'] = getCurrentPrice(row['stock_code'])
         # print(row)
         sell_data.append(row)
@@ -50,19 +51,24 @@ def get_orders():
     # sell_data = sorted(sell_data,key= lambda x : x['price'], reverse = True)
     # print(buy_data)
     # print(sell_data)
-    if(max_order_id == 0):
-        max_order_id += 1
+    # if(max_order_id == 0):
+    #     max_order_id += 1
     if form.validate_on_submit():
         order_dict = form.data
-        print(order_dict["order_type"])
+        trade_type = order_dict['trade_type']
         del order_dict['csrf_token']
         del order_dict['submit']
         order_dict['status'] = 'pending'
-        order_dict['order_id'] = max_order_id+1
-        #order_dict['order_id'] = current_order
-        append_dict_as_row(order_dict["order_type"]+'_orders.csv',order_dict,['quantity','stock_code','customer_id','order_id','order_type','flavour','status'])
+        if order_dict['trade_type']=='buy':
+            order_dict['order_id'] = max_buyorder_id+1
+        else:
+            order_dict['order_id'] = max_sellorder_id+1
+        del order_dict['trade_type']
+        order_dict['pending_quantity'] = form.quantity.data
+        append_dict_as_row(trade_type.title()+'orders.csv',order_dict,['order_id','quantity','pending_quantity','stock_code','customer_id','order_type','flavour','status'])
+        matching()
         return redirect(url_for('get_orders'))
-    return render_template("orders.html", buy_data = buy_data , sell_data = sell_data , form = form)
+    return render_template("orders.html", buy_data = buy_data , sell_data = sell_data , form=form )
 
 if __name__ == '__main__':
     app.run(debug = True)

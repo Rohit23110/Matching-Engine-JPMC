@@ -14,6 +14,7 @@
                     <th>Order ID</th>
                     <th>Customer ID</th>
                     <th>QTY</th>
+                    <th>Pending QTY</th>
                     <th>Stock Code</th>
                     <th>Flavour</th>
                     <th>Status</th>
@@ -25,6 +26,7 @@
                       <td>{{buy_order['order_id']}}</td>
                       <td>{{buy_order['customer_id']}}</td>
                       <td>{{buy_order['quantity']}}</td>
+                      <td>{{buy_order['pending_quantity']}}</td>
                       <td>{{buy_order['stock_code']}}</td>
                       <td>{{buy_order['flavour']}}</td>
                       <td>{{buy_order['status']}}</td>
@@ -37,6 +39,7 @@
                         <th>Order ID</th>
                         <th>Customer ID</th>
                         <th>QTY</th>
+                        <th>Pending QTY</th>
                         <th>Stock Code</th>
                         <th>Flavour</th>
                         <th>Status</th>
@@ -55,6 +58,7 @@
                     <th>Order ID</th>
                     <th>Customer ID</th>
                     <th>QTY</th>
+                    <th>Pending QTY</th>
                     <th>Stock Code</th>
                     <th>Flavour</th>
                     <th>Status</th>
@@ -66,6 +70,7 @@
                       <td>{{sell_order.order_id}}</td>
                       <td>{{sell_order.customer_id}}</td>
                       <td>{{sell_order.quantity}}</td>
+                      <td>{{sell_order.pending_quantity}}</td>
                       <td>{{sell_order.stock_code}}</td>
                       <td>{{sell_order.flavour}}</td>
                       <td>{{sell_order.status}}</td>
@@ -77,6 +82,7 @@
                     <th>Order ID</th>
                     <th>Customer ID</th>
                     <th>QTY</th>
+                    <th>Pending QTY</th>
                     <th>Stock Code</th>
                     <th>Flavour</th>
                     <th>Status</th>
@@ -85,8 +91,7 @@
         </table>
     </div>
   </div>
-  <!-- Modal -->
-<div class="modal fade" id="order_add_modal" tabindex="-1" role="dialog" aria-labelledby="order_add_modalLabel" aria-hidden="true">
+  <div class="modal fade" id="order_add_modal" tabindex="-1" role="dialog" aria-labelledby="order_add_modalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
@@ -103,6 +108,15 @@
                     {{form.customer_id(class="form-control")}}
                     {% if form.customer_id.errors %}
                         {% for error in form.customer_id.errors %}
+                        <p class="text-danger">{{error}}</p>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    {{form.trade_type.label}}
+                    {{form.trade_type(class="form-control")}}
+                    {% if form.trade_type.errors %}
+                        {% for error in form.trade_type.errors %}
                         <p class="text-danger">{{error}}</p>
                         {% endfor %}
                     {% endif %}
@@ -151,8 +165,7 @@
         </div>
       </div>
     </div>
-  </div>
- 
+ </div>
 {% endblock content %}
 {% block script %}
    <script src="../static/main.js"></script>

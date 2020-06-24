@@ -1,8 +1,8 @@
 import pandas as pd
 from Output import *
 from fetchPrices import getCurrentPrice
-if __name__ == "__main__":
-# def matching():
+# if __name__ == "__main__":
+def matching():
     sellorders = pd.read_csv("Sellorders.csv")
     buyorders = pd.read_csv("Buyorders.csv")
     transactions = pd.DataFrame(columns = ['buy_customer_id', 'sell_customer_id', 'quantity', 'stock_code', 'price', 'buy_order_id', 'sell_order_id'])

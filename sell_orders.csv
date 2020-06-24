@@ -1,4 +1,0 @@
-quantity,stock_code,customer_id,order_id,order_type,flavour,status
-100,500325,1,2,sell,all/none,pending
-10,500209,3,6,sell,all/none,pending
-10,500180,3,4,sell,all/none,pending
