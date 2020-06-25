@@ -1,4 +1,5 @@
 import pandas as pd
+import numpy as np
 from Output import *
 from fetchPrices import getCurrentPrice
 # if __name__ == "__main__":
@@ -7,28 +8,30 @@ def matching():
     buyorders = pd.read_csv("Buyorders.csv")
     transactions = pd.DataFrame(columns = ['buy_customer_id', 'sell_customer_id', 'quantity', 'stock_code', 'price', 'buy_order_id', 'sell_order_id'])
 
-    for i in range(buyorders.shape[0]):
-        if buyorders.iloc[i].status == "pending":
-            sellorder_list = sellorders[(sellorders.status == "pending") & (sellorders.stock_code == buyorders.iloc[i].stock_code)]
-            # print(sellorder_list)
+    # for i in range(buyorders.shape[0]):
+    i = 0
+    buyorder_list = buyorders[(buyorders.status == "pending")]
+    while i < buyorder_list.shape[0]:    
+        sellorder_list = sellorders[(sellorders.status == "pending") & (sellorders.stock_code == buyorder_list.iloc[i].stock_code)]
+        if np.sum(sellorder_list['pending_quantity']) >= buyorder_list.iloc[i].pending_quantity:
             for j in range(sellorder_list.shape[0]): # Iterate over market sell orders until the buy order is completely satisfied
-                # print("Market buy order with market sell order")
-                transaction_quantity = min(buyorders.iloc[i].pending_quantity, sellorder_list.iloc[j].pending_quantity)
-                pending_quantity = sellorder_list.iloc[j].pending_quantity - buyorders.iloc[i].pending_quantity
-                buyorders.loc[i, 'pending_quantity'] = max(0, -(pending_quantity))
+                transaction_quantity = min(buyorder_list.iloc[i].pending_quantity, sellorder_list.iloc[j].pending_quantity)
+                pending_quantity = sellorder_list.iloc[j].pending_quantity - buyorder_list.iloc[i].pending_quantity
+                buyorders.loc[(buyorder_list.iloc[i].order_id == buyorders.order_id), 'pending_quantity'] = max(0, -(pending_quantity))
                 sellorders.loc[(sellorder_list.iloc[j].order_id == sellorders.order_id), 'pending_quantity'] = max(0, pending_quantity)                
                 
-                transaction = {'buy_customer_id': buyorders.iloc[i].customer_id, 'sell_customer_id': sellorder_list.iloc[j].customer_id, 'quantity': transaction_quantity, 'stock_code' : sellorder_list.iloc[j].stock_code, 'price': getCurrentPrice(str(sellorder_list.iloc[j].stock_code)), 'buy_order_id': buyorders.iloc[i].order_id, 'sell_order_id': sellorder_list.iloc[j].order_id}
+                transaction = {'buy_customer_id': buyorder_list.iloc[i].customer_id, 'sell_customer_id': sellorder_list.iloc[j].customer_id, 'quantity': transaction_quantity, 'stock_code' : sellorder_list.iloc[j].stock_code, 'price': getCurrentPrice(str(sellorder_list.iloc[j].stock_code)), 'buy_order_id': buyorder_list.iloc[i].order_id, 'sell_order_id': sellorder_list.iloc[j].order_id}
                 transactions = transactions.append(transaction, ignore_index=True)
-                # print(sellorders.loc[(sellorder_list.iloc[j].order_id == sellorders.order_id), 'pending_quantity'])
+                
                 if sellorders.loc[(sellorder_list.iloc[j].order_id == sellorders.order_id), 'pending_quantity'].iloc[0] == 0:
                     sellorders.loc[sellorder_list.iloc[j].order_id == sellorders.order_id, 'status'] = 'completed'
-                if buyorders.loc[i, 'pending_quantity'] == 0:
-                    buyorders.loc[i, 'status'] = 'completed'
+                if buyorders.loc[(buyorder_list.iloc[i].order_id == buyorders.order_id), 'pending_quantity'].iloc[0] == 0:
+                    buyorders.loc[(buyorder_list.iloc[i].order_id == buyorders.order_id), 'status'] = 'completed'
+                    i += 1
                     break
-            # print(buyorders)
-            # print(sellorders)
-
+        else:
+            buyorder_list = buyorder_list[buyorder_list['stock_code'] != buyorder_list.iloc[i].stock_code]
+            # break
     convert_dict = { # Had to add this to prevent the columns from converting to float
         "buy_customer_id": "int64",
         "sell_customer_id": "int64",

@@ -2,13 +2,16 @@ from flask import Flask,request,jsonify,url_for,render_template,redirect,logging
 import json
 import pandas as pd
 import csv
+import schedule
+import time
+import datetime
 from csv import DictWriter
 from forms import inputOrderForm
 from Matching import matching
+from Cancellation import remove
 
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'secret'
-
 
 def append_dict_as_row(file_name, dict_of_elem, field_names):
     with open(file_name, 'a+', newline='') as write_obj:
@@ -65,9 +68,22 @@ def get_orders():
         del order_dict['trade_type']
         order_dict['pending_quantity'] = form.quantity.data
         append_dict_as_row(trade_type.title()+'orders.csv',order_dict,['order_id','quantity','pending_quantity','stock_code','customer_id','order_type','flavour','status'])
-        matching()
+        
+        currentTime = datetime.datetime.now()
+        startTime = datetime.time(9, 15, 0)
+        endTime = datetime.time(15, 30, 0)
+
+        if (currentTime.time() < endTime) and (currentTime.time() > startTime):
+            matching()
+        
         return redirect(url_for('get_orders'))
     return render_template("orders.html", buy_data = buy_data , sell_data = sell_data , form=form )
 
 if __name__ == '__main__':
     app.run(debug = True)
+
+schedule.every().day.at("15:30").do(remove) 
+while True:
+    schedule.run_pending()
+    time.sleep(1)
+    
