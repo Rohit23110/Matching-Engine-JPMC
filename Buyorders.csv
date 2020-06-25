@@ -1,9 +1,2 @@
 order_id,quantity,pending_quantity,stock_code,customer_id,order_type,flavour,status
-1,50,0,500325,1,market,all/none,completed
-2,20,0,500325,4,market,all/none,completed
-3,60,0,500325,5,market,all/none,completed
-4,50,50,500209,5,market,all/none,cancelled
-5,100,0,500325,9,market,all/none,completed
-6,20,0,500325,13,market,all/none,completed
-7,150,150,500325,10,market,all/none,cancelled
-8,5,5,500209,15,market,all/none,cancelled
+
