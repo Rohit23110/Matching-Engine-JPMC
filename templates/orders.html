@@ -3,8 +3,16 @@
   All Orders
 {% endblock title %}
 {% block content %}
-  <div class="row">
-    <div class="col-md-5.75 mx-auto mt-4">
+    <div class="container mt-4">
+        {% if time_valid[0] == False %}
+        <div class="alert alert-warning" role="alert">
+            <marquee>You can place the order but it will be processed after 9:15 (From Monday to Friday)</marquee>
+          </div>
+        {% else %}
+        <div class="alert alert-info" role="alert">
+            <marquee>Market is Open from Monday to Friday between 9:15 to 3:30</marquee>
+          </div>
+        {% endif %}
         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">  
             <h1 class="h2">Buy Orders</h1>
         </div>
@@ -48,7 +56,7 @@
             </tfoot>
         </table>
     </div>
-    <div class="col-md-5.5 mx-auto mt-4">
+    <div class="container mt-4">
         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">  
             <h1 class="h2">Sell Orders</h1>
         </div>
@@ -90,14 +98,13 @@
             </tfoot>
         </table>
     </div>
-  </div>
   <div class="modal fade" id="order_add_modal" tabindex="-1" role="dialog" aria-labelledby="order_add_modalLabel" aria-hidden="true">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="order_add_modalLabel">Add New Order</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
+            <p aria-hidden="true">&times;</p>
           </button>
         </div>
         <div class="modal-body">
@@ -120,6 +127,10 @@
                         <p class="text-danger">{{error}}</p>
                         {% endfor %}
                     {% endif %}
+                    <div >
+                        <span class="text-sm-left text-inf" style="font-size: 12px;">1> Buy orders by default have all/none flavour.</span><br>
+                        <span class="text-sm-left text"-info style="font-size: 12px;">2> Sell orders by default have partial flavour.</span>
+                    </div>
                 </div>
                 <div class="form-group">
                     {{form.order_type.label}}
@@ -148,24 +159,16 @@
                         {% endfor %}
                     {% endif %}
                 </div>
-                <div class="form-group">
-                    {{form.flavour.label}}
-                    {{form.flavour(class="form-control")}}
-                    {% if form.flavour.errors %}
-                        {% for error in form.flavour.errors %}
-                        <p class="text-danger">{{error}}</p>
-                        {% endfor %}
-                    {% endif %}
-                </div>
                 {{form.submit(class="btn btn-success")}}
             </form>
-        </div>
+        </div>        
         <div class="modal-footer">
-          <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
         </div>
       </div>
     </div>
  </div>
+
 {% endblock content %}
 {% block script %}
    <script src="../static/main.js"></script>

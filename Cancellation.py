@@ -1,5 +1,4 @@
 import pandas as pd
-import schedule
 import time
 from Matching import matching
 
@@ -12,14 +11,14 @@ def remove():
     buyOrders.to_csv("Buyorders.csv", sep=",", index=False)
     print("In remove function")
     
-if __name__ == "__main__":
-    print("Done")
+# if __name__ == "__main__":
+#     print("Done")
 
-schedule.every().day.at("15:30").do(remove)
-schedule.every().day.at("09:15").do(matching) 
-while True:
-    schedule.run_pending()
-    time.sleep(1)
+# schedule.every().day.at("15:30").do(remove)
+# schedule.every().day.at("09:15").do(matching) 
+# while True:
+#     schedule.run_pending()
+#     time.sleep(1)
 
 
     
