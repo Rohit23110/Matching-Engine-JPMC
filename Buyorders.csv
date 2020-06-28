@@ -1,5 +1,9 @@
 order_id,quantity,pending_quantity,stock_code,customer_id,order_type,flavour,status
-9,10,10,503320,15,market,all/none,cancelled
-10,10,10,503320,2,market,all/none,cancelled
-11,10,10,503320,5,market,all/none,cancelled
-12,20,20,503320,7,market,all/none,cancelled
+1,20,0,500209,2,market,all/none,completed
+2,20,0,500209,2,market,all/none,completed
+3,20,0,500209,2,market,all/none,completed
+4,30,0,500209,4,market,all/none,completed
+5,30,0,500209,2,market,all/none,completed
+6,10,10,503320,7,market,all/none,cancelled
+7,60,60,503320,6,market,all/none,cancelled
+8,10,10,503320,8,market,all/none,cancelled

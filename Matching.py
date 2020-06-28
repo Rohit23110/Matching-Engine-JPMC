@@ -5,6 +5,7 @@ from fetchPrices import getCurrentPrice
 from flask import redirect,url_for
 
 def matching():
+    print("123")
     sellorders = pd.read_csv("Sellorders.csv")
     buyorders = pd.read_csv("Buyorders.csv")
     transactions = pd.DataFrame(columns = ['buy_customer_id', 'sell_customer_id', 'quantity', 'stock_code', 'price', 'buy_order_id', 'sell_order_id'])

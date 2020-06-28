@@ -8,15 +8,17 @@ from csv import DictWriter
 from forms import inputOrderForm
 from Matching import matching
 from Cancellation import remove
-from flask_apscheduler import APScheduler 
+from flask_apscheduler import APScheduler
 from apscheduler.schedulers.background import BackgroundScheduler
 
     
-subprocess.call('python Cancellation.py', creationflags=subprocess.CREATE_NEW_CONSOLE)
 app = Flask(__name__)
-scheduler = BackgroundScheduler(daemon = True)
-scheduler.add_job(id="remove" ,func = remove, trigger = 'cron',hour=15,minute=30)
-scheduler.add_job(id="matching" ,func = matching, trigger = 'cron',hour=9,minute=15)
+scheduler = APScheduler()
+scheduler.init_app(app)
+scheduler.start()
+scheduler.add_job(id="remove" ,func = remove, trigger = 'cron',day_of_week='mon-sun',hour=15,minute=30)
+scheduler.add_job(id="matching" ,func = matching, trigger = 'cron', day_of_week='mon-sun',hour=9,minute=15)
+
 app.config['SECRET_KEY'] = 'secret'
 day = datetime.datetime.now().strftime("%w")
 
@@ -26,14 +28,17 @@ def append_dict_as_row(file_name, dict_of_elem, field_names):
         dict_writer.writerow(dict_of_elem)
 
 
-@app.route('/transactions')
+@app.route('/transactions',methods=['GET','POST'])
 def show_transaction():
     time_valid = [True]
     currentTime = datetime.datetime.now()
     startTime = datetime.time(9, 15, 0)
     endTime = datetime.time(15, 30, 0)
-    if ((currentTime.time() < endTime) and (currentTime.time() > startTime) and int(day)!=0 and int(day)!=6):
-        time_valid[0] = True
+    if(int(day)!=0 and int(day)!=6):
+        if (currentTime.time() < endTime and currentTime.time() > startTime):
+            time_valid[0] = True
+        else:
+            time_valid[0] = False
     else:
         time_valid[0] = False
     form = inputOrderForm()
@@ -55,12 +60,12 @@ def get_orders():
     input_file = csv.DictReader(open("Buyorders.csv"))
     for row in input_file:
         if(max_buyorder_id < int(row['order_id'])):
-          max_buyorder_id = int(row['order_id'])
+            max_buyorder_id = int(row['order_id'])
         buy_data.append(row)
     input_file = csv.DictReader(open("Sellorders.csv"))
     for row in input_file:
         if(max_sellorder_id < int(row['order_id'])):
-          max_sellorder_id = int(row['order_id'])
+            max_sellorder_id = int(row['order_id'])
         sell_data.append(row)
     currentTime = datetime.datetime.now()
     startTime = datetime.time(9, 15, 0)
@@ -98,7 +103,8 @@ def get_orders():
     print(time_valid)
     return render_template("orders.html", buy_data = buy_data , sell_data = sell_data , form=form, time_valid=time_valid)
 
+
 if __name__ == '__main__':
-    scheduler.start()
+    
     app.run(debug = True)
 
