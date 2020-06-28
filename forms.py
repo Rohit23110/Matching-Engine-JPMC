@@ -8,7 +8,7 @@ class inputOrderForm(FlaskForm):
     customer_id = IntegerField("Enter the Customer ID",validators=[DataRequired()])
     trade_type = SelectField("Enter the trade type",validators=[DataRequired()],choices=[('buy','Buy'),('sell','Sell')])
     order_type = SelectField("Order type",validators=[DataRequired()],choices=[('market','Market')]) 
-    flavour = SelectField("Flavour type",validators=[DataRequired()],choices=[('all/none','All/None')])
+    #flavour = SelectField("Flavour type",validators=[DataRequired()],choices=[('all/none','All/None')])
     submit = SubmitField("Submit")
 
 

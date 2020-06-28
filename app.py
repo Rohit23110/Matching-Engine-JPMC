@@ -9,8 +9,10 @@ from csv import DictWriter
 from forms import inputOrderForm
 from Matching import matching
 from Cancellation import remove
+from flask_apscheduler import APScheduler 
 
 app = Flask(__name__)
+scheduler = APScheduler()
 app.config['SECRET_KEY'] = 'secret'
 
 def append_dict_as_row(file_name, dict_of_elem, field_names):
@@ -20,18 +22,29 @@ def append_dict_as_row(file_name, dict_of_elem, field_names):
 
 @app.route('/transactions')
 def show_transaction():
+    time_valid = [True]
+    currentTime = datetime.datetime.now()
+    startTime = datetime.time(9, 15, 0)
+    endTime = datetime.time(15, 30, 0)
+    if (currentTime.time() < endTime) and (currentTime.time() > startTime):
+        time_valid[0] = True
+    else:
+        time_valid[0] = False
+    form = inputOrderForm()
     transaction_data = []
     input_file = csv.DictReader(open("Transaction.csv"))
     for row in input_file:
         transaction_data.append(row)
-    return render_template('transaction.html',transaction_data = transaction_data)
+    return render_template('transaction.html',transaction_data = transaction_data ,form=form, time_valid=time_valid)
 
 #@app.route('/place_orders',methods=['GET','POST'])
 @app.route('/',methods=['GET','POST'])
+@app.route('/placeOrders',methods=['GET','POST'])
 def get_orders():
     form = inputOrderForm()
     buy_data = []
     sell_data = []
+    time_valid = [True]
     max_buyorder_id = 0
     max_sellorder_id = 0
     input_file = csv.DictReader(open("Buyorders.csv"))
@@ -55,6 +68,13 @@ def get_orders():
     # print(sell_data)
     # if(max_order_id == 0):
     #     max_order_id += 1
+    currentTime = datetime.datetime.now()
+    startTime = datetime.time(9, 15, 0)
+    endTime = datetime.time(15, 30, 0)
+    if (currentTime.time() < endTime) and (currentTime.time() > startTime):
+        time_valid[0] = True
+    else:
+        time_valid[0] = False
     if form.validate_on_submit():
         order_dict = form.data
         trade_type = order_dict['trade_type']
@@ -63,27 +83,27 @@ def get_orders():
         order_dict['status'] = 'pending'
         if order_dict['trade_type']=='buy':
             order_dict['order_id'] = max_buyorder_id+1
+            order_dict['flavour'] = 'all/none'
         else:
             order_dict['order_id'] = max_sellorder_id+1
+            order_dict['flavour'] = 'partial'
         del order_dict['trade_type']
         order_dict['pending_quantity'] = form.quantity.data
         append_dict_as_row(trade_type.title()+'orders.csv',order_dict,['order_id','quantity','pending_quantity','stock_code','customer_id','order_type','flavour','status'])
-        
-        currentTime = datetime.datetime.now()
-        startTime = datetime.time(9, 15, 0)
-        endTime = datetime.time(15, 30, 0)
-
         if (currentTime.time() < endTime) and (currentTime.time() > startTime):
+            time_valid[0] = True
             matching()
-        
+        else:
+            time_valid[0] = False
         return redirect(url_for('get_orders'))
-    return render_template("orders.html", buy_data = buy_data , sell_data = sell_data , form=form )
+    return render_template("orders.html", buy_data = buy_data , sell_data = sell_data , form=form, time_valid=time_valid)
 
 if __name__ == '__main__':
+    scheduler.add_job(id='', func = remove, trigger = '')
     app.run(debug = True)
 
-schedule.every().day.at("15:30").do(remove) 
-while True:
-    schedule.run_pending()
-    time.sleep(1)
+# schedule.every().day.at("15:30").do(remove) 
+# while True:
+#     schedule.run_pending()
+#     time.sleep(1)
     

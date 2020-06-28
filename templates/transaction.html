@@ -41,6 +41,89 @@
         </tfoot>
     </table>
   </div>
+  <div class="modal fade" id="order_add_modal" tabindex="-1" role="dialog" aria-labelledby="order_add_modalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="order_add_modalLabel">Add New Order</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <p aria-hidden="true">&times;</p>
+          </button>
+        </div>
+       {% if  time_valid[0] == True %}
+        <div class="modal-body">
+            <form method="POST">
+                {{form.hidden_tag()}}
+                <div class="form-group">
+                    {{form.customer_id.label}}
+                    {{form.customer_id(class="form-control")}}
+                    {% if form.customer_id.errors %}
+                        {% for error in form.customer_id.errors %}
+                        <p class="text-danger">{{error}}</p>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    {{form.trade_type.label}}
+                    {{form.trade_type(class="form-control")}}
+                    {% if form.trade_type.errors %}
+                        {% for error in form.trade_type.errors %}
+                        <p class="text-danger">{{error}}</p>
+                        {% endfor %}
+                    {% endif %}
+                    <div >
+                        <span class="text-sm-left text-inf" style="font-size: 12px;">1> Buy orders by default have all/none flavour.</span><br>
+                        <span class="text-sm-left text"-info style="font-size: 12px;">2> Sell orders by default have partial flavour.</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    {{form.order_type.label}}
+                    {{form.order_type(class="form-control")}}
+                    {% if form.order_type.errors %}
+                        {% for error in form.order_type.errors %}
+                        <p class="text-danger">{{error}}</p>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    {{form.stock_code.label}}
+                    {{form.stock_code(class="form-control")}}
+                    {% if form.stock_code.errors %}
+                        {% for error in form.stock_code.errors %}
+                        <p class="text-danger">{{error}}</p>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+                <div class="form-group">
+                    {{form.quantity.label}}
+                    {{form.quantity(class="form-control")}}
+                    {% if form.quantity.errors %}
+                        {% for error in form.quantity.errors %}
+                        <p class="text-danger">{{error}}</p>
+                        {% endfor %}
+                    {% endif %}
+                </div>
+                {{form.submit(class="btn btn-success")}}
+            </form>
+        </div>
+        {% else %}
+        <div class="modal-body">
+            <p>Sorry! The Service is halted after 3:30 till next day 9:15</p>
+          </div>
+        {% endif %}
+        
+        <div class="modal-footer">
+            
+             {% if time_valid[0] == True  %}}
+            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+            {% else %}
+            <button type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
+            {% endif %}
+            
+        </div>
+      </div>
+    </div>
+ </div>
 {% endblock content %}
 {% block script %}
   <script src="../static//main.js"></script>
