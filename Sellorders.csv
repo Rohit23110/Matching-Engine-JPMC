@@ -1,3 +1,3 @@
 order_id,quantity,pending_quantity,stock_code,customer_id,order_type,flavour,status
-1,5,5,503320,3,market,partial,pending
-2,10,10,503320,2,market,partial,pending
+1,5,5,503320,3,market,partial,cancelled
+2,10,10,503320,2,market,partial,cancelled

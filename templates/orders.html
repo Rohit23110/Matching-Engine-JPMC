@@ -4,6 +4,15 @@
 {% endblock title %}
 {% block content %}
     <div class="container mt-4">
+        {% if time_valid[0] == False %}
+        <div class="alert alert-warning" role="alert">
+            <marquee>You can place the order but it will be processed after 9:15 (From Monday to Friday)</marquee>
+          </div>
+        {% else %}
+        <div class="alert alert-info" role="alert">
+            <marquee>Market is Open from Monday to Friday between 9:15 to 3:30</marquee>
+          </div>
+        {% endif %}
         <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pb-2 mb-3 border-bottom">  
             <h1 class="h2">Buy Orders</h1>
         </div>
@@ -98,7 +107,6 @@
             <p aria-hidden="true">&times;</p>
           </button>
         </div>
-       {% if  time_valid[0] == True %}
         <div class="modal-body">
             <form method="POST">
                 {{form.hidden_tag()}}
@@ -153,21 +161,9 @@
                 </div>
                 {{form.submit(class="btn btn-success")}}
             </form>
-        </div>
-        {% else %}
-        <div class="modal-body">
-            <p>Sorry! The Service is halted after 3:30 till next day 9:15</p>
-          </div>
-        {% endif %}
-        
+        </div>        
         <div class="modal-footer">
-            
-             {% if time_valid[0] == True  %}}
             <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
-            {% else %}
-            <button type="button" class="btn btn-primary" data-dismiss="modal">Ok</button>
-            {% endif %}
-            
         </div>
       </div>
     </div>
