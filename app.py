@@ -17,6 +17,7 @@ scheduler = APScheduler()
 scheduler.init_app(app)
 scheduler.start()
 scheduler.add_job(id="remove" ,func = remove, trigger = 'cron',day_of_week='mon-sun',hour=15,minute=30)
+
 scheduler.add_job(id="matching" ,func = matching, trigger = 'cron', day_of_week='mon-sun',hour=9,minute=15)
 
 app.config['SECRET_KEY'] = 'secret'
@@ -79,7 +80,7 @@ def get_orders():
     else:
         time_valid[0] = False
     print(time_valid)
-    if form.validate_on_submit():
+    if request.method =='POST':
         order_dict = form.data
         trade_type = order_dict['trade_type']
         del order_dict['csrf_token']

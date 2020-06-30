@@ -108,25 +108,18 @@
           </button>
         </div>
         <div class="modal-body">
-            <form method="POST">
+            <form method="POST" id='order_form' onsubmit="return false">
                 {{form.hidden_tag()}}
                 <div class="form-group">
                     {{form.customer_id.label}}
-                    {{form.customer_id(class="form-control")}}
-                    {% if form.customer_id.errors %}
-                        {% for error in form.customer_id.errors %}
-                        <p class="text-danger">{{error}}</p>
-                        {% endfor %}
-                    {% endif %}
+                    {{form.customer_id(class="form-control customer_id")}}
+                    <span class="text-danger customer_id_error" style="font-size: 12px;"></span>
+                    
                 </div>
                 <div class="form-group">
                     {{form.trade_type.label}}
-                    {{form.trade_type(class="form-control")}}
-                    {% if form.trade_type.errors %}
-                        {% for error in form.trade_type.errors %}
-                        <p class="text-danger">{{error}}</p>
-                        {% endfor %}
-                    {% endif %}
+                    {{form.trade_type(class="form-control trade_type")}}
+                    
                     <div >
                         <span class="text-sm-left text-inf" style="font-size: 12px;">1> Buy orders by default have all/none flavour.</span><br>
                         <span class="text-sm-left text"-info style="font-size: 12px;">2> Sell orders by default have partial flavour.</span>
@@ -134,32 +127,24 @@
                 </div>
                 <div class="form-group">
                     {{form.order_type.label}}
-                    {{form.order_type(class="form-control")}}
-                    {% if form.order_type.errors %}
-                        {% for error in form.order_type.errors %}
-                        <p class="text-danger">{{error}}</p>
-                        {% endfor %}
-                    {% endif %}
+                    {{form.order_type(class="form-control order_type")}}
+                    
                 </div>
                 <div class="form-group">
                     {{form.stock_code.label}}
-                    {{form.stock_code(class="form-control")}}
-                    {% if form.stock_code.errors %}
-                        {% for error in form.stock_code.errors %}
-                        <p class="text-danger">{{error}}</p>
-                        {% endfor %}
-                    {% endif %}
-                </div>
+                    {{form.stock_code(class="form-control stock_code")}}
+                    <span class="text-danger stock_code_error" style="font-size: 12px;"></span>
+                    
                 <div class="form-group">
                     {{form.quantity.label}}
-                    {{form.quantity(class="form-control")}}
-                    {% if form.quantity.errors %}
-                        {% for error in form.quantity.errors %}
-                        <p class="text-danger">{{error}}</p>
-                        {% endfor %}
-                    {% endif %}
+                    {{form.quantity(class="form-control quantity")}}
+                    <span class="text-danger quantity_error" style="font-size: 12px;"></span>
+                    
                 </div>
-                {{form.submit(class="btn btn-success")}}
+                <div >
+                    {{form.submit(class="btn btn-success",id ='submit')}}
+                </div>
+                
             </form>
         </div>        
         <div class="modal-footer">
@@ -171,5 +156,27 @@
 
 {% endblock content %}
 {% block script %}
-   <script src="../static/main.js"></script>
+<script src='../static/main.js'></script>
+<!-- <script type="text/javascript">
+    $('#submit').click(function(event) {
+        event.preventDefault();
+        $.post(url, data=$('#form').serialize(), function(data) {
+          if (data.status == 'ok') {
+            $('#order_add_modal').modal('hide');
+            location.reload();
+          }
+          else {
+            $('#order_add_modal.modal-content').html(data);
+          }
+        });
+      });
+  $(document).ready(function() {
+    
+      $('#example_buy_table').DataTable();
+      $('#example_sell_table').DataTable();
+      $('#example_transaction_table').DataTable();
+     
+  } 
+  );
+  </script> -->
  {% endblock script %}
