@@ -3,51 +3,71 @@ $(document).ready(function() {
     $('#example_sell_table').DataTable();
     $('#example_transaction_table').DataTable();
     $("#order_form").submit(function(){
-        // alert("Hello");
         var stock_code = $(".stock_code").val()
+        let isStockCodeNum = (/^\d+$/).test(stock_code)
+
         var quantity = $(".quantity").val()
-        var customer = $(".customer_id").val()
-        var status = false
-        if(stock_code.length!=6)
-        {
-            $(".stock_code_error").html("Stock Code Value Should be 6 Charecters")
-            $(".stock_code").addClass("border_danger")
-            status = false
-        }
-        else
-        {
-            $(".stock_code_error").html("")
-            $(".stock_code").removeClass("border_danger") 
-            status = true
-            if(quantity<0)
+        let isQuantityNum = (/^\d+$/).test(quantity)
+
+        var customerID = $(".customer_id").val()
+        let isCustomerIDNum = (/^\d+$/).test(customerID)
+
+        var stockCodeStatus = false
+        var quantityStatus = false
+        var customerStatus = false
+        
+        if (isStockCodeNum) {
+            if(stock_code.length!=6)
             {
-                $(".quantity_error").html("Quantity Value Should be Greater than 0")
+                $(".stock_code_error").html("Stock Code Value Should Be Of 6 Digits")
+                $(".stock_code").addClass("border_danger")
+                stockCodeStatus = false
+            }
+            else
+            {
+                $(".stock_code_error").html("")
+                $(".stock_code").removeClass("border_danger") 
+                stockCodeStatus = true
+            }
+        } else {
+            $(".stock_code_error").html("Stock Code Value Should Be A 6 Digit Number")
+            $(".stock_code").addClass("border_danger")
+            stockCodeStatus = false
+        }
+    
+        if (isQuantityNum) {
+            if(quantity < 0)
+            {
+                $(".quantity_error").html("Quantity Value Should Be A Positive Number")
                 $(".quantity").addClass("border_danger")
-                status = false
+                quantityStatus = false
             }
             else
             {
                 $(".quantity_error").html("")
                 $(".quantity").removeClass("border_danger") 
-                status = true
-                if(isNaN(customer))
-                {
-                    $(".customer_id_error").html("Customer ID should be Integer")
-                    $(".customer_id").addClass("border_danger")
-                    status = false
-                }
-                else
-                {
-                    $(".customer_id_error").html("")
-                    $(".scustomer_id").removeClass("border_danger") 
-                    status = true
-                }  
+                quantityStatus = true
             }
+        } else {
+            $(".quantity_error").html("Quantity Value Should Be An Integer")
+            $(".quantity").addClass("border_danger")
+            quantityStatus = false
         }
         
+        if(!isCustomerIDNum)
+        {
+            $(".customer_id_error").html("Customer ID should be Integer")
+            $(".customer_id").addClass("border_danger")
+            customerStatus = false
+        }
+        else
+        {
+            $(".customer_id_error").html("")
+            $(".customer_id").removeClass("border_danger") 
+            customerStatus = true
+        } 
 
-
-        if(status == true)
+        if(stockCodeStatus == true && quantityStatus == true && customerStatus == true)
         {
             $.ajax({
                 url:"http://localhost:5000/",
@@ -60,52 +80,73 @@ $(document).ready(function() {
         }
         
     })
+
     $("#transaction_form").submit(function(){
-        // alert("Hello");
         var stock_code = $(".stock_code").val()
+        let isStockCodeNum = (/^\d+$/).test(stock_code)
+
         var quantity = $(".quantity").val()
-        var customer = $(".customer_id").val()
-        var status = false
-        if(stock_code.length!=6)
-        {
-            $(".stock_code_error").html("Stock Code Value Should be 6 Charecters")
-            $(".stock_code").addClass("border_danger")
-            status = false
-        }
-        else
-        {
-            $(".stock_code_error").html("")
-            $(".stock_code").removeClass("border_danger") 
-            status = true
-            if(quantity<0)
+        let isQuantityNum = (/^\d+$/).test(quantity)
+
+        var customerID = $(".customer_id").val()
+        let isCustomerIDNum = (/^\d+$/).test(customerID)
+
+        var stockCodeStatus = false
+        var quantityStatus = false
+        var customerStatus = false
+        
+        if (isStockCodeNum) {
+            if(stock_code.length!=6)
             {
-                $(".quantity_error").html("Quantity Value Should be Greater than 0")
+                $(".stock_code_error").html("Stock Code Value Should be of 6 Digits")
+                $(".stock_code").addClass("border_danger")
+                stockCodeStatus = false
+            }
+            else
+            {
+                $(".stock_code_error").html("")
+                $(".stock_code").removeClass("border_danger") 
+                stockCodeStatus = true
+            }
+        } else {
+            $(".stock_code_error").html("Stock Code Value Should be a 6 Digit Number")
+            $(".stock_code").addClass("border_danger")
+            stockCodeStatus = false
+        }
+    
+        if (isQuantityNum) {
+            if(quantity < 0)
+            {
+                $(".quantity_error").html("Quantity Value Should Be A Positive Number")
                 $(".quantity").addClass("border_danger")
-                status = false
+                quantityStatus = false
             }
             else
             {
                 $(".quantity_error").html("")
                 $(".quantity").removeClass("border_danger") 
-                status = true
-                if(isNaN(customer))
-                {
-                    $(".customer_id_error").html("Customer ID should be Integer")
-                    $(".customer_id").addClass("border_danger")
-                    status = false
-                }
-                else
-                {
-                    $(".customer_id_error").html("")
-                    $(".scustomer_id").removeClass("border_danger") 
-                    status = true
-                }  
+                quantityStatus = true
             }
+        } else {
+            $(".quantity_error").html("Quantity Value Should Be An Integer")
+            $(".quantity").addClass("border_danger")
+            quantityStatus = false
         }
         
+        if(!isCustomerIDNum)
+        {
+            $(".customer_id_error").html("Customer ID should be Integer")
+            $(".customer_id").addClass("border_danger")
+            customerStatus = false
+        }
+        else
+        {
+            $(".customer_id_error").html("")
+            $(".customer_id").removeClass("border_danger") 
+            customerStatus = true
+        } 
 
-
-        if(status == true)
+        if(stockCodeStatus == true && quantityStatus == true && customerStatus == true)
         {
             $.ajax({
                 url:"http://localhost:5000/",

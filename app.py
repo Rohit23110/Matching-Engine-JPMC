@@ -4,6 +4,7 @@ import pandas as pd
 import csv
 import datetime
 import subprocess
+# from bsedata.bse import BSE
 from csv import DictWriter
 from forms import inputOrderForm
 from Matching import matching
@@ -17,11 +18,13 @@ scheduler = APScheduler()
 scheduler.init_app(app)
 scheduler.start()
 scheduler.add_job(id="remove" ,func = remove, trigger = 'cron',day_of_week='mon-sun',hour=15,minute=30)
-
 scheduler.add_job(id="matching" ,func = matching, trigger = 'cron', day_of_week='mon-sun',hour=9,minute=15)
 
 app.config['SECRET_KEY'] = 'secret'
 day = datetime.datetime.now().strftime("%w")
+
+# b=BSE(update_codes=True)
+# result=b.getScripCodes()
 
 def append_dict_as_row(file_name, dict_of_elem, field_names):
     with open(file_name, 'a+', newline='') as write_obj:
@@ -33,7 +36,7 @@ def append_dict_as_row(file_name, dict_of_elem, field_names):
 def show_transaction():
     time_valid = [True]
     currentTime = datetime.datetime.now()
-    startTime = datetime.time(9, 15, 0)
+    startTime = datetime.time(4, 15, 0)
     endTime = datetime.time(15, 30, 0)
     if(int(day)!=0 and int(day)!=6):
         if (currentTime.time() < endTime and currentTime.time() > startTime):
@@ -69,7 +72,7 @@ def get_orders():
             max_sellorder_id = int(row['order_id'])
         sell_data.append(row)
     currentTime = datetime.datetime.now()
-    startTime = datetime.time(9, 15, 0)
+    startTime = datetime.time(4, 15, 0)
     endTime = datetime.time(15, 30, 0)
     print(int(day))
     if(int(day)!=0 and int(day)!=6):
