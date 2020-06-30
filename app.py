@@ -36,7 +36,7 @@ def append_dict_as_row(file_name, dict_of_elem, field_names):
 def show_transaction():
     time_valid = [True]
     currentTime = datetime.datetime.now()
-    startTime = datetime.time(4, 15, 0)
+    startTime = datetime.time(9, 15, 0)
     endTime = datetime.time(15, 30, 0)
     if(int(day)!=0 and int(day)!=6):
         if (currentTime.time() < endTime and currentTime.time() > startTime):
@@ -72,7 +72,7 @@ def get_orders():
             max_sellorder_id = int(row['order_id'])
         sell_data.append(row)
     currentTime = datetime.datetime.now()
-    startTime = datetime.time(4, 15, 0)
+    startTime = datetime.time(9, 15, 0)
     endTime = datetime.time(15, 30, 0)
     print(int(day))
     if(int(day)!=0 and int(day)!=6):
