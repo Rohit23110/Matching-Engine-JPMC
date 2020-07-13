@@ -1,4 +1,14 @@
 $(document).ready(function() {
+    var json
+    $.ajax ({ 
+        url: "static/stk.json",
+        method: "GET",
+        success: function (response){ 
+            json = JSON.parse(JSON.stringify(response));
+            console.log(json)
+        }
+    });
+
     $('#example_buy_table').DataTable();
     $('#example_sell_table').DataTable();
     $('#example_transaction_table').DataTable();
@@ -25,9 +35,19 @@ $(document).ready(function() {
             }
             else
             {
-                $(".stock_code_error").html("")
-                $(".stock_code").removeClass("border_danger") 
-                stockCodeStatus = true
+                if(!json.hasOwnProperty(stock_code))
+                {
+                    $(".stock_code_error").html("Stock Code Is Invalid")
+                    $(".stock_code").addClass("border_danger")
+                    stockCodeStatus = false
+                }
+                else
+                {
+                    $(".stock_code_error").html("")
+                    $(".stock_code").removeClass("border_danger") 
+                    stockCodeStatus = true
+                }
+
             }
         } else {
             $(".stock_code_error").html("Stock Code Value Should Be A 6 Digit Number")
@@ -98,18 +118,28 @@ $(document).ready(function() {
         if (isStockCodeNum) {
             if(stock_code.length!=6)
             {
-                $(".stock_code_error").html("Stock Code Value Should be of 6 Digits")
+                $(".stock_code_error").html("Stock Code Value Should Be Of 6 Digits")
                 $(".stock_code").addClass("border_danger")
                 stockCodeStatus = false
             }
             else
             {
-                $(".stock_code_error").html("")
-                $(".stock_code").removeClass("border_danger") 
-                stockCodeStatus = true
+                if(!json.hasOwnProperty(stock_code))
+                {
+                    $(".stock_code_error").html("Stock Code Is Invalid")
+                    $(".stock_code").addClass("border_danger")
+                    stockCodeStatus = false
+                }
+                else
+                {
+                    $(".stock_code_error").html("")
+                    $(".stock_code").removeClass("border_danger") 
+                    stockCodeStatus = true
+                }
+
             }
         } else {
-            $(".stock_code_error").html("Stock Code Value Should be a 6 Digit Number")
+            $(".stock_code_error").html("Stock Code Value Should Be A 6 Digit Number")
             $(".stock_code").addClass("border_danger")
             stockCodeStatus = false
         }
